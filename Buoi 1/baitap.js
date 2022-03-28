@@ -1,3 +1,5 @@
+console.log("------------------------");
+console.log("Bài tập về nhà");
 //bai 1
 //Viết function truyền vào 1 số nguyên dường. Tính giai thừa của số đó
 function giaiThua(x) {

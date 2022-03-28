@@ -238,6 +238,14 @@ function sumChuoi(){
 }
 console.log(sumChuoi());
 
+// bai 5
+// tinh the tich hinh cau
+function thetichHinhCau(a){
+  return (4*Math.PI*a*a*a)/3;
+}
+let ban_kinh = 5;
+console.log("Thể tích hình cầu với bán kính " + ban_kinh +  " là: " + thetichHinhCau(ban_kinh));
+
 //bai 6
 function sumNewChuoi(a,b){
     let result = 0;
@@ -256,3 +264,32 @@ console.log(sumNewChuoi(3,8));
 console.log(sumNewChuoi(8,3));
 
 //bai 7
+//Cho 1 số, kiểm tra xem số đó có phải là số nguyên tố hay không, kết quả trả về true hoặc false.
+
+function checkNguyenTo(n){
+  if(n < 2){
+    return false;
+  }
+  for(let i = 2; i < n - 1; i++){
+      if(n % i == 0){
+        return false;
+      }
+  }
+
+  return true;
+}
+console.log(checkNguyenTo(9));
+
+//bai 8
+//Cho 1 số nguyên dương bất kỳ. Tính tổng tất cả các số nguyên tố mà nhỏ hơn hoặc bằng tham số truyền vào.
+
+function sumNguyenTo(x){
+  let result = 0;
+  for(let j = 2; j <= x;j++){
+      if(checkNguyenTo(j) == true){
+        result += j;
+      }
+  }
+  return result;
+}
+console.log(sumNguyenTo(10));
