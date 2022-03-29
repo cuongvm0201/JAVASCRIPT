@@ -23,38 +23,31 @@ console.log(reverseString("helloworld"));
 //bai 3
 //Viết function truyền vào mã quốc gia. Trả về message có ý nghĩa là “Xin chào”, tương ứng với mã quốc gia được truyền vào
 function translateMessage(codeCountry) {
-  switch (codeCountry) {
-    case "VN":
+  switch (codeCountry.toLowerCase()) {
     case "vn": {
       console.log("Xin Chào");
       break;
     }
-    case "EN":
     case "en": {
       console.log("Hello");
       break;
     }
-    case "TH":
     case "th": {
       console.log("สวัสดี");
       break;
     }
-    case "JA":
     case "ja": {
       console.log("やあ");
       break;
     }
-    case "CN":
     case "cn": {
       console.log("你好");
       break;
     }
-    case "ES":
     case "es": {
       console.log("Hola");
       break;
     }
-    case "FR":
     case "fr": {
       console.log("Bonjour");
       break;
@@ -65,7 +58,7 @@ function translateMessage(codeCountry) {
     }
   }
 }
-translateMessage("VN");
+translateMessage("FR");
 
 //bai 4
 //Cho function truyền vào 1 chuỗi dài hơn 15 ký tự. Viết 1 function cắt chuỗi, 

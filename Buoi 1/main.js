@@ -241,7 +241,7 @@ console.log(sumChuoi());
 // bai 5
 // tinh the tich hinh cau
 function thetichHinhCau(a){
-  return (4*Math.PI*a*a*a)/3;
+  return (4*Math.PI*Math.pow(a,3))/3;
 }
 let ban_kinh = 5;
 console.log("Thể tích hình cầu với bán kính " + ban_kinh +  " là: " + thetichHinhCau(ban_kinh));
