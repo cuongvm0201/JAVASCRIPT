@@ -34,6 +34,10 @@ function renderBreed(breeds) {
   }
 
   btn.addEventListener("click", async function () {
+    if(showText == "" || showText == undefined ){
+      alert("Vui lòng chọn giống chó");
+      return;
+    }
     try {
       //B1: Gọi API
       //Cách 1: Sử dụng fetch API mặc định
@@ -44,7 +48,7 @@ function renderBreed(breeds) {
       listul.innerHTML = "";
       renderSubBreed(res.data.message);
     } catch (error) {
-      alert("Vui lòng chọn giống chó");
+      
       console.log(error.response.data.message);
     }
   });
