@@ -28,11 +28,6 @@ btn2.addEventListener("click", async function () {
     //gọi API
     let h = Number(height.value);
     let w = Number(weight.value);
-    // let res1 = await axios.post(`http://localhost:8080/bmi`, {
-    //   height: h,
-    //   weight: w,
-    // })
-
     let res1 = await axios({
       method: 'post',
       url: 'http://localhost:8080/bmi',
