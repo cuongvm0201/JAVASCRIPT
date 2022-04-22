@@ -99,7 +99,7 @@ btnAdd.addEventListener("click", async function () {
       return;
     }
       // Nếu isUpdate == true thì cho phép cập nhật
-   // Ngược lại isUpdate == false thì cho phép thêm
+      // Ngược lại isUpdate == false thì cho phép thêm
    if (isUpdate) {
 
     // Tìm công viêc có id = idUpdate
@@ -117,8 +117,6 @@ btnAdd.addEventListener("click", async function () {
  }
 
  inputTodoEl.value = "";
-    // Hiển thị lại trên giao diện
-    renderTodos(todos);
   
   } catch (error) {
     console.log(error);
