@@ -24,7 +24,7 @@ async function getTodos(status) {
     console.log(res);
     todos = res.data;
 
-    renderTodos(res.data);
+    renderTodos(todos);
   } catch (error) {
     console.log(error);
   }
@@ -53,7 +53,7 @@ function renderTodos(arr) {
             <p>${t.title}</p>
         </div>
         <div class="option">
-            <button class="btn btn-update">
+            <button class="btn btn-update" onclick="updateTitle(${t.id})">
                 <img src="./img/pencil.svg" alt="icon" />
             </button>
             <button class="btn btn-delete" onclick="deleteTodo(${t.id})")>
@@ -62,12 +62,10 @@ function renderTodos(arr) {
         </div>
     </div>`;
   }
-
   todoListEl.innerHTML = html;
 }
 
 // Xóa công việc
-
 async function deleteTodo(id) {
   try {
     //gọi API xóa
@@ -88,7 +86,8 @@ async function deleteTodo(id) {
 
 // Thêm công việc
 // Truy cập vào input và button thêm
-
+let isUpdate = false;
+let idUpdate = null;
 const inputTodoEl = document.getElementById("todo-input");
 const btnAdd = document.getElementById("btn-add");
 btnAdd.addEventListener("click", async function () {
@@ -99,15 +98,28 @@ btnAdd.addEventListener("click", async function () {
       alert("Vui lòng nhập dữ liệu");
       return;
     }
-    //Gọi API
-    let res = await axios.post(`${API_URL}/todos`, {
-      title: title,
-    });
-    console.log(res);
-    // Thêm todo mới vào trong mảng
-    todos.push(res.data);
+      // Nếu isUpdate == true thì cho phép cập nhật
+   // Ngược lại isUpdate == false thì cho phép thêm
+   if (isUpdate) {
+
+    // Tìm công viêc có id = idUpdate
+     let todo = todos.find((todo) => todo.id == idUpdate);
+
+    // Sửa lại tiêu đề của công việc đó = nội dung trong ô input
+     todo.title = title;
+
+    // Thực hiện cập nhật
+     updateTodo(todo);
+ } else {
+
+    // Thực hiện thêm công việc
+     createTodo(title);
+ }
+
+ inputTodoEl.value = "";
     // Hiển thị lại trên giao diện
     renderTodos(todos);
+  
   } catch (error) {
     console.log(error);
   }
@@ -137,6 +149,103 @@ async function toggleStatus(id) {
   } catch (error) {
     console.log(error);
   }
+}
+
+const todo_option_item = document.querySelectorAll(".todo-option-item input");
+function getOptionSelected() {
+  for (let i = 0; i < todo_option_item.length; i++) {
+      if (todo_option_item[i].checked) {
+          return todo_option_item[i].value;
+      }
+  }
+}
+
+todo_option_item.forEach((btn) => {
+  btn.addEventListener("change", function () {
+      let optionSelected = getOptionSelected();
+      getTodos(optionSelected);
+  });
+});
+
+
+
+// API thêm công việc
+function createTodoAPI(title) {
+  return axios.post(`${API_URL}/todos`, {
+      title: title
+  });
+}
+
+// Hàm xử lý việc thêm
+async function createTodo(title) {
+  try {
+     // Gọi API tạo todo
+      const res = await createTodoAPI(title);
+
+     // Khi có kết quả trả về từ server thì thêm vào trong mảng todos
+      todos.push(res.data)
+
+      // Render ra ngoài giao diện
+      renderTodos(todos);
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+// API Update công việc
+
+function updateTodoAPI(todoUpdate) {
+  return axios.put(`${API_URL}/todos/${todoUpdate.id}`, {
+      title: todoUpdate.title
+  });
+}
+// Hàm xử lý việc update
+async function updateTodo(todoUpdate) {
+  try {
+     // Gọi API cập nhật
+      let res = await updateTodoAPI(todoUpdate);
+
+     // Cập nhật lại trong mảng todos
+      todos.forEach((todo, index) => {
+          if (todo.id == todoUpdate.id) {
+              todos[index] = res.data;
+          }
+      });
+
+     // Thay đổi giao diện về ban đầu
+     btnAdd.innerText = "Thêm";
+
+     // Reset lại biến sau khi đã cập nhật thành công
+      isUpdate = false;
+      idUpdate = null;
+
+      renderTodos(todos);
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+const todo_input = document.getElementById("todo-input");
+function updateTitle(id) {
+  let title;
+
+ // Tìm kiếm công việc muốn cập nhật và lưu lại giá trị title
+  todos.forEach((todo) => {
+      if (todo.id == id) {
+          title = todo.title;
+      }
+  });
+
+ // Đổi tên "THÊM" -> "CẬP NHẬT"
+  btnAdd.innerText = "CẬP NHẬT";
+
+ // Hiển thị tiêu đề cần cập nhật lên ô input
+  todo_input.value = title;
+  todo_input.focus();
+
+ // Lưu lại id của công việc cần cập nhật và cho phép cập nhật
+  idUpdate = id;
+  isUpdate = true;
 }
 
 getTodos();
