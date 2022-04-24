@@ -148,7 +148,7 @@ async function toggleStatus(id) {
     console.log(error);
   }
 }
-
+//Truy cập 3 nút radio
 const todo_option_item = document.querySelectorAll(".todo-option-item input");
 function getOptionSelected() {
   for (let i = 0; i < todo_option_item.length; i++) {
@@ -194,7 +194,8 @@ async function createTodo(title) {
 
 function updateTodoAPI(todoUpdate) {
   return axios.put(`${API_URL}/todos/${todoUpdate.id}`, {
-      title: todoUpdate.title
+      title: todoUpdate.title,
+      status: todoUpdate.status
   });
 }
 // Hàm xử lý việc update
@@ -223,7 +224,7 @@ async function updateTodo(todoUpdate) {
   }
 }
 
-const todo_input = document.getElementById("todo-input");
+
 function updateTitle(id) {
   let title;
 
@@ -238,8 +239,8 @@ function updateTitle(id) {
   btnAdd.innerText = "CẬP NHẬT";
 
  // Hiển thị tiêu đề cần cập nhật lên ô input
-  todo_input.value = title;
-  todo_input.focus();
+ inputTodoEl.value = title;
+ inputTodoEl.focus();
 
  // Lưu lại id của công việc cần cập nhật và cho phép cập nhật
   idUpdate = id;

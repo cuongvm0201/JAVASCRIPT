@@ -1,13 +1,13 @@
-package vn.techmaster.todolist.controller;
+package vn.techmaster.todothymeleaf.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.techmaster.todolist.model.Todo;
-import vn.techmaster.todolist.request.CreatTodoRequest;
-import vn.techmaster.todolist.request.UpdateTodoRequest;
-import vn.techmaster.todolist.service.TodoService;
+import vn.techmaster.todothymeleaf.model.Todo;
+import vn.techmaster.todothymeleaf.request.CreateTodoRequest;
+import vn.techmaster.todothymeleaf.request.UpdateTodoRequest;
+import vn.techmaster.todothymeleaf.service.TodoService;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ public class TodoController {
     }
 
     @PostMapping("/todos")
-    public ResponseEntity<?> createTodo(@RequestBody CreatTodoRequest request){
-          Todo todo = todoService.createTodo(request);
-            return ResponseEntity.ok(todo);
+    public ResponseEntity<?> createTodo(@RequestBody CreateTodoRequest request){
+        Todo todo = todoService.createTodo(request);
+        return ResponseEntity.ok(todo);
     }
 
     @PutMapping("/todos/{id}")
