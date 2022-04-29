@@ -2,9 +2,12 @@ package vn.techmaster.user_backend.service;
 
 import org.springframework.stereotype.Service;
 import vn.techmaster.user_backend.dto.UserDto;
+import vn.techmaster.user_backend.exception.BadRequestException;
 import vn.techmaster.user_backend.exception.NotFoundException;
 import vn.techmaster.user_backend.mapper.UserMapper;
 import vn.techmaster.user_backend.model.User;
+import vn.techmaster.user_backend.request.CreateUserRequest;
+import vn.techmaster.user_backend.request.UpdateUserRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,25 +46,17 @@ public class UserService {
         throw new NotFoundException("User with id = " + id + " không tồn tại");
     }
 
-    public User createUser(User user){
-        Random rd = new Random();
-        user.setId(rd.nextInt(100));
-        users.add(user);
-        return user;
+    public List<UserDto> searchUser(String name) {
+        return users
+                .stream()
+                .filter(user -> user.getName().toLowerCase().contains(name.toLowerCase()))
+                .map(user -> UserMapper.toUserDto(user))
+                .collect(Collectors.toList());
     }
 
-    public User updateUser(int id, User user){
-        for(User curentUser: users){
-            if(curentUser.getId() == id){
-                curentUser.setName(user.getName());
-                curentUser.setEmail(user.getEmail());
-                curentUser.setPhone(user.getPhone());
-                curentUser.setAddress(user.getAddress());
-                return curentUser;
-            }
-        }
-        return null;
-    }
+
+
+
 
     public void deleteUser(int id){
         Optional<User> userOptional = findById(id);
@@ -78,5 +73,34 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return users.stream().filter(user -> user.getEmail().equals(email)).findFirst();
+    }
+
+    public UserDto createUser(CreateUserRequest createUserRequest){
+
+       if(findByEmail(createUserRequest.getEmail()).isPresent()){
+           throw new BadRequestException("email = "+ createUserRequest.getEmail() + " is existed");
+       }
+       Random rd = new Random();
+       User user = new User();
+       user.setId(rd.nextInt(100));
+       user.setName(createUserRequest.getName());
+       user.setEmail(createUserRequest.getEmail());
+       user.setPhone(createUserRequest.getPhone());
+       user.setAddress(createUserRequest.getAddress());
+       user.setPassword(createUserRequest.getPassword());
+       users.add(user);
+       return UserMapper.toUserDto(user);
+    }
+
+    public UserDto updateUser(int id, UpdateUserRequest updateUserRequest){
+        Optional<User> userOptional = findById(id);
+        if(userOptional.isEmpty()){
+            throw new NotFoundException("User with id = " + id + " không tồn tại");
+        }
+        User user = userOptional.get();
+        user.setName(updateUserRequest.getName());
+        user.setPhone(updateUserRequest.getPhone());
+        user.setAddress(updateUserRequest.getAddress());
+        return UserMapper.toUserDto(user);
     }
 }

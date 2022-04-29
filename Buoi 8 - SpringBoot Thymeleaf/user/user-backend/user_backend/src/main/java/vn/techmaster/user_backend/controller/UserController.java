@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.techmaster.user_backend.dto.UserDto;
 import vn.techmaster.user_backend.model.User;
+import vn.techmaster.user_backend.request.CreateUserRequest;
+import vn.techmaster.user_backend.request.UpdateUserRequest;
 import vn.techmaster.user_backend.service.UserService;
 
 import java.util.List;
@@ -23,6 +25,12 @@ public class UserController {
         List<UserDto> userDtos = userService.getUsers();
         return ResponseEntity.ok(userDtos);
     }
+    
+    @GetMapping("/users/search")
+    public ResponseEntity<?> searchUser(@RequestParam String name) {
+        List<UserDto> userDtos = userService.searchUser(name);
+        return ResponseEntity.ok(userDtos);
+    }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
@@ -31,16 +39,16 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> creatUser(@RequestBody User user){
-        User newUser = userService.createUser(user);
-        return ResponseEntity.ok(newUser);
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest){
+        UserDto userDto = userService.createUser(createUserRequest);
+        return ResponseEntity.ok(userDto);
     }
 
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody User user){
-        User renewUser = userService.updateUser(id,user);
-        return ResponseEntity.ok(renewUser);
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UpdateUserRequest updateUserRequest){
+        UserDto userDto = userService.updateUser(id, updateUserRequest);
+        return ResponseEntity.ok(userDto);
     }
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable int id){
