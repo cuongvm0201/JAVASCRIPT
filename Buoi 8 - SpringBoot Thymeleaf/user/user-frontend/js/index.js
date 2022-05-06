@@ -41,12 +41,8 @@ const renderUsers = (arr) => {
         <td>${u.phone}</td>
         <td>${u.address}</td>
         <td>
-            <a href="./detail.html?id=${
-              u.id
-            }" class="btn btn-success">Xem chi tiết</a>
-            <button class="btn btn-danger" onclick="deleteUser(${
-              u.id
-            })">Xóa</button>
+            <a href="./detail.html?id=${u.id}" class="btn btn-success">Xem chi tiết</a>
+            <button class="btn btn-danger" onclick="deleteUser(${u.id})">Xóa</button>
         </td>
     </tr>`;
   }
